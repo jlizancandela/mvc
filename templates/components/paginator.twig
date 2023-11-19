@@ -1,0 +1,6 @@
+<div class="pagination pagination-compact pagination-bordered flex justify-center my-5">
+	{% for i in range(1,count) %}
+		<input onclick="window.location='articles?{% if public %}public={{public}}{% endif %}&page={{i}}{% if ofertas == 1 %}&ofertas=1{% endif %}'" type="radio" name="pagination-3" id="pgn-{{i}}" {% if i == page %} checked {% endif %}/>
+		<label for="pgn-{{i}}" class="btn">{{i}}</label>
+	{% endfor %}
+</div>

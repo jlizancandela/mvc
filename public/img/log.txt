@@ -1,0 +1,24 @@
+array(0) {
+}
+array(1) {
+  ["Id_articulo"]=>
+  string(2) "20"
+}
+array(1) {
+  ["file"]=>
+  array(6) {
+    ["name"]=>
+    string(9) "azul.jpeg"
+    ["full_path"]=>
+    string(9) "azul.jpeg"
+    ["type"]=>
+    string(10) "image/jpeg"
+    ["tmp_name"]=>
+    string(25) "/opt/lampp/temp/phpqyDY50"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(331501)
+  }
+}
+El archivo se subió correctamente.El archivo se subió correctamente.

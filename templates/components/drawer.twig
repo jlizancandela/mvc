@@ -1,0 +1,26 @@
+<input type="checkbox" id="drawer-left" class="drawer-toggle" />
+<label class="overlay" for="drawer-left"></label>
+<div class="drawer w-fit px-10 bg-slate-50">
+    <div class="drawer-content pt-10 flex flex-col items-center h-full ">
+        <label for="drawer-left"
+               class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+        <nav class="menu bg-gray-2 p-2 rounded-md">
+            <section class="menu-section">
+                <ul class="menu-items">
+                    <li class="menu-item text-xl">
+                        <a href="{{ padre }}admin/users">
+                            <i class="bi bi-people"></i>
+                            Users
+                        </a>
+                    </li>
+                    <li class="menu-item text-xl">
+                        <a href="{{ padre }}admin/articles">
+                            <i class="bi bi-archive-fill"></i>
+                            Articles
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </nav>
+    </div>
+</div>

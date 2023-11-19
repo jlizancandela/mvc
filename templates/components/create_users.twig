@@ -1,0 +1,110 @@
+<input class="modal-state" id="modal-create-users" type="checkbox" />
+<div class="modal">
+    <label class="modal-overlay" for="modal-create-users"></label>
+    <div class="modal-content flex w-full flex-col gap-5 p-7">
+        <label for="modal-create-users"
+               class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+        <div class="flex flex-col gap-2">
+            <h2 class="text-center text-2xl font-semibold">Crear Usuario</h2>
+            <p class="mx-auto max-w-xs text-sm text-content2">Rellena los campos para continuar.</p>
+        </div>
+        <section>
+            {# CONTENIDO MODAL #}
+            <form method="post"
+                  action="{{ padre }}register"
+                  class="ml-5 w-full create-users-form">
+                <div class="mx-auto flex w-full max-w-sm flex-col gap-6 mt-5">
+                    <div class="form-group mt-3 w-full">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <!-- Campo para el email -->
+                            <div class="form-field">
+                                <label class="form-label" for="email">Dirección Email</label>
+                                <input placeholder="Escribe tu email"
+                                       type="email"
+                                       name="email"
+                                       class="input input-block"
+                                       id="email"
+                                       required />
+                            </div>
+                            <!-- Campo para el nombre -->
+                            <div class="form-field">
+                                <label class="form-label" for="Nombre">Nombre completo</label>
+                                <input placeholder="Escribe tu nombre"
+                                       type="text"
+                                       name="nombre"
+                                       class="input max-w-full"
+                                       id="nombre"
+                                       required />
+                            </div>
+                        </div>
+                        <!-- Campo para la Contraseña -->
+                        <div class="form-field">
+                            <label class="form-label" for="password">Contraseña</label>
+                            <input placeholder="Escribe tu contraseña"
+                                   type="password"
+                                   name="password"
+                                   class="input max-w-full"
+                                   id="password"
+                                   required />
+                        </div>
+                        <!-- Campo para el Teléfono -->
+                        <div class="form-field">
+                            <label class="form-label" for="telefono">Teléfono</label>
+                            <input placeholder="Escribe tu teléfono"
+                                   type="tel"
+                                   name="telefono"
+                                   class="input max-w-full"
+                                   id="telefono"
+                                   required />
+                        </div>
+                        <!-- Campo para la Dirección -->
+                        <div class="form-field">
+                            <label class="form-label" for="direccion">Dirección</label>
+                            <input placeholder="Escribe tu dirección"
+                                   type="text"
+                                   name="direccion"
+                                   class="input max-w-full"
+                                   id="direccion"
+                                   required />
+                        </div>
+                        <!-- Campo para el código postal -->
+                        <div class="form-field">
+                            <label class="form-label" for="postalCode">
+                                Código Postal
+                                <span></span>
+                            </label>
+                            <input placeholder="Escribe tu código postal"
+                                   type="text"
+                                   name="postalCode"
+                                   class="input max-w-full"
+                                   id="postalCode"
+                                   maxlength="5"
+                                   required />
+                        </div>
+                        <!-- Campo para la provincia -->
+                        <div class="form-field">
+                            <label class="form-label" for="province">Provincia</label>
+                            <input placeholder="Escribe tu provincia"
+                                   type="text"
+                                   name="province"
+                                   class="input max-w-full"
+                                   id="province"
+                                   required />
+                        </div>
+                        <label for="Rol">Rol:</label>
+                        <select class="select" name="Rol" id="Rol">
+                            <option value="Admin">Admin</option>
+                            <option value="User" selected>User</option>
+                        </select>
+                        <div class="form-field pt-5">
+                            <!-- Boton -->
+                            <div class="form-control justify-between">
+                                <button class="btn btn-primary w-full">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

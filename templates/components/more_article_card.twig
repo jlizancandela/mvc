@@ -1,0 +1,30 @@
+<div class="w-52 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-5">
+	<a href="article?id={{value.Id}}">
+		<img src="{{value.Portada}}" alt="Product" class="h-60 w-52 object-cover rounded-t-xl"/>
+		<div class="px-4 py-3 w-72">
+			<span class="text-gray-400 mr-3 uppercase text-xs">{{value.Categoria}}</span>
+			<p class="text-sm font-bold text-black truncate block capitalize">
+				{{value.Nombre}}
+			</p>
+			<div class="flex items-center">
+				<p class="text-sm font-semibold text-black cursor-auto my-3">
+					{% if sesion.login %}
+						{{value.Oferta}}
+						€
+					{% else %}
+						{{value.Precio}}
+						€
+					{% endif %}
+				</p>
+				<del>
+					<p class="text-sm text-gray-600 cursor-auto ml-2">
+						{% if sesion.login %}
+							{{value.Precio}}
+							€
+						{% endif %}
+					</p>
+				</del>
+			</div>
+		</div>
+	</a>
+</div>

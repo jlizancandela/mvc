@@ -1,0 +1,40 @@
+<section class="h-15vh w-screen bg-neutral-100 lg:py-10 lg:w-screen select-none my-5">
+    <div class="grid lg:grid-cols-2 items-center justify-items-center gap-5">
+        <div class="order-2 lg:order-1 flex flex-col justify-center items-center">
+            <p class="text-4xl font-bold md:text-7xl text-orange-600">
+                10%
+            </p>
+            <p class="text-4xl font-bold md:text-7xl">
+                Temporada otoño
+            </p>
+            <p class="mt-2 text-sm md:text-lg">
+                Por tiempo limitado
+            </p>
+            {% if not session.login %}
+                <button class="text-lg md:text-2xl bg-black text-white py-2 px-5 mt-10 hover:bg-zinc-800"
+                        href='login'>
+                    <a href="login">Accede a tu cuenta</a>
+                </button>
+            {% else %}
+                {% if ofertas != 1 %}
+                    <button class="text-lg md:text-2xl bg-black text-white py-2 px-5 mt-10 hover:bg-zinc-800">
+                        <a href="articles?ofertas=1">Ofertas</a>
+                    </button>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="order-1 lg:order-2">
+            <video loop muted autoplay class="object-cover h-96 w-96">
+                {% if public == 'hombre' %}
+                    <source src="public/media/heromen.mp4" type="video/mp4" />
+                {% else %}
+                    {% if ofertas == 1 %}
+                        <source src="public/media/herooffers.mp4" type="video/mp4" />
+                    {% else %}
+                        <source src="public/media/hero.mp4" type="video/mp4" />
+                    {% endif %}
+                {% endif %}
+            </video>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,49 @@
+<div class="navbar w-screen text-xl">
+    <div class="navbar-start">
+        <div>
+            <a class="navbar-item" href="{{ padre }}home">ROPA ONLINE</a>
+        </div>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+        <div>
+            <a href="{{ padre }}articles?public=mujer" class="navbar-item">Mujer</a>
+            <a href="{{ padre }}articles?public=hombre" class="navbar-item">Hombre</a>
+            {% if session.login %}<a href="{{ padre }}articles?ofertas=1" class="navbar-item">Ofertas</a>{% endif %}
+        </div>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+        <div>
+            <a class="navbar-item">CONTACTO</a>
+            {% if session.login %}
+                <a class="navbar-item" href="{{ padre }}logout">LOGOUT</a>
+            {% else %}
+                <a class="navbar-item" href="{{ padre }}login">LOGIN</a>
+            {% endif %}
+        </div>
+    </div>
+    <div>
+        {% if session.rol.Rol == 'Admin' %}
+            <label for="drawer-left" class="btn btn-ghost">
+                <i class="bi bi-window-sidebar text-xl"></i>
+            </label>
+            {% include "components/drawer.twig" %}
+        {% endif %}
+    </div>
+    <div class="dropdown lg:hidden">
+        <label class="btn my-2 text-xl" tabindex="0">
+            <i class="bi bi-list"></i>
+        </label>
+        <div class="dropdown-menu flex justify-center items-center">
+            <a class="navbar-item" href="{{ padre }}home">ROPA ONLINE</a>
+            <a href="{{ padre }}articles?public=mujer" class="navbar-item">MUJER</a>
+            <a href="{{ padre }}articles?public=hombre" class="navbar-item">HOMBRE</a>
+            {% if session.login %}<a href="{{ padre }}articles?ofertas=1" class="navbar-item">OFERTAS</a>{% endif %}
+            <a class="navbar-item">CONTACTO</a>
+            {% if session.login %}
+                <a class="navbar-item" href="{{ padre }}logout">LOGOUT</a>
+            {% else %}
+                <a class="navbar-item" href="{{ padre }}login">LOGIN</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

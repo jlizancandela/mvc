@@ -1,0 +1,19 @@
+<div class="flex md:flex-row sm:flex-col flex-col w-full justify-center"
+     id="imgbanner">
+    {% for subarray in array.banner %}
+        <img class="w-96 object-cover self-center sm:self-stretch md:self-stretch"
+             src="{{ subarray.Url }}"
+             alt=""
+             id="{{ subarray.Id_producto }}">
+    {% endfor %}
+</div>
+<div class="flex justify-center bg-neutral-100">
+    <div class="self-end text-4xl text-orange-500 font-extrabold my-2  text-center">DESCUBRE LAS NUEVAS TENDENCIAS</div>
+</div>
+<script>
+const imgbanner = document.getElementById('imgbanner');
+
+imgbanner.addEventListener('click', (e) => { // console.log(e.target.id);
+window.location.href = 'article?id=' + e.target.id;
+});
+</script>

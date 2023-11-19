@@ -1,0 +1,119 @@
+<article>
+    <label class="btn btn-primary mx-5" for="modal-1">Añadir Producto</label>
+    <input class="modal-state" id="modal-1" type="checkbox" />
+    <div class="modal">
+        <label class="modal-overlay" for="modal-1"></label>
+        <div class="modal-content flex w-full flex-col gap-5 p-7">
+            <label for="modal-1"
+                   class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+            <div class="flex flex-col gap-2">
+                <h2 class="text-center text-2xl font-semibold">Introducir Articulos</h2>
+                <p class="mx-auto max-w-xs text-sm text-content2">Rellene el formulario para continuar.</p>
+            </div>
+            {# Id Nombre Categoria Publico Descripcion Precio Oferta #}
+            <section>
+                <form action="{{ padre }}articles/create"
+                      method="post"
+                      class="p-6 space-y-4 form-create-articles">
+                    <div class="form-group">
+                        <input name="id" type="number" class="hidden" />
+                        {# campo con el id #}
+                        {# ----------------------------------------------------------------------- #}
+                        {# Campo para el nombre del articulo, name: nombre #}
+                        {# ----------------------------------------------------------------------- #}
+                        <div class="form-field">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input placeholder="Type here" class="input max-w-full" name="nombre" />
+                        </div>
+                        {# ----------------------------------------------------------------------- #}
+                        {# Campo para la Categoria del articulo, name: categoria #}
+                        {# ----------------------------------------------------------------------- #}
+                        <div class="grid sm:grid-cols-2 gap-2">
+                            <div>
+                                <label class="form-label" for="categoria">Categoria</label>
+                                <select name="categoria" class="select">
+                                    {% for categorias in array.categorias %}
+                                        <option value="{{ categorias.Id }}">{{ categorias.Nombre }}</option>
+                                    {% endfor %}
+                                    <option value="nueva">Nueva</option>
+                                </select>
+                            </div>
+                            {# ----------------------------------------------------------------------- #}
+                            {# Campo para el publico del articulo, name: publico #}
+                            {# ----------------------------------------------------------------------- #}
+                            <div>
+                                <label class="form-label" for="publico">Publico</label>
+                                <select name="publico" class="select">
+                                    {% for publico in array.publico %}<option value="{{ publico.Id }}">{{ publico.Nombre }}</option>{% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        {# ----------------------------------------------------------------------- #}
+                        {# Campo para la nueva categoria del articulo, name: nuevaCategoria #}
+                        {# ----------------------------------------------------------------------- #}
+                        <div>
+                            <input type="text"
+                                   placeholder="Escriba la nueva categoria"
+                                   class="input max-w-full hidden my-2"
+                                   name="nuevaCategoria" />
+                            <input type="text"
+                                   placeholder="Describa la categoria"
+                                   class="input max-w-full hidden my-2"
+                                   name="descripcionCategoria" />
+                        </div>
+                        {# ----------------------------------------------------------------------- #}
+                        {# Campo para la descripcion del articulo, name: descripcion #}
+                        {# ----------------------------------------------------------------------- #}
+                        <div class="form-field">
+                            <label class="form-label" for="descripcion">Descripcion</label>
+                            <textarea placeholder="Type here" class="input max-w-full" name="descripcion"></textarea>
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-2">
+                            {# ----------------------------------------------------------------------- #}
+                            {# Campo para el precio del articulo, name: precio #}
+                            {# ----------------------------------------------------------------------- #}
+                            <div class="form-field">
+                                <label class="form-label" for="precio">Precio</label>
+                                <input type="number" class="input max-w-full" name="precio" />
+                            </div>
+                            {# ----------------------------------------------------------------------- #}
+                            {# Campo para la oferta del articulo, name: oferta #}
+                            {# ----------------------------------------------------------------------- #}
+                            <div class="form-field">
+                                <label class="form-label" for="oferta">Oferta</label>
+                                <select name="oferta" class="select text-sm">
+                                    {% for oferta in array.ofertas %}
+                                        <option value="{{ oferta.Id }}">{{ oferta.Descripcion }} ({{ oferta.Oferta }}%)</option>
+                                    {% endfor %}
+                                    <option value="nueva">Nueva</option>
+                                    <option value="ninguna">Ninguna</option>
+                                </select>
+                            </div>
+                            {# ----------------------------------------------------------------------- #}
+                            {# Campo para la nueva oferta del articulo, name: nueva-oferta #}
+                            {# ----------------------------------------------------------------------- #}
+                            <div class="hidden nOferta">
+                                <input type="text"
+                                       class="input max-w-full"
+                                       name="nueva-oferta"
+                                       placeholder="Describa la oferta" />
+                            </div>
+                            <div class="hidden nOferta">
+                                <input type="number"
+                                       class="input max-w-full"
+                                       name="oferta-dto"
+                                       placeholder="% dto" />
+                            </div>
+                        </div>
+                        {# ----------------------------------------------------------------------- #}
+                        {# Boton de guardado #}
+                        {# ----------------------------------------------------------------------- #}
+                        <div class="form-field">
+                            <button class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</article>

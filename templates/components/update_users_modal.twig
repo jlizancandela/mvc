@@ -1,0 +1,46 @@
+<input class="modal-state" id="modal-update-users" type="checkbox"/>
+<div class="modal">
+	<label class="modal-overlay" for="modal-update-users"></label>
+	<div class="modal-content flex w-full flex-col gap-5 p-7">
+		<label for="modal-update-users" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+		<div class="flex flex-col gap-2">
+			<h2 class="text-center text-2xl font-semibold">Modificar Usuarios</h2>
+			<p class="mx-auto max-w-xs text-sm text-content2">Rellena los campos y continua.</p>
+		</div>
+
+		<section>
+			{# CONTENIDO MODAL #}
+			<form action="{{padre}}update_users" method="post" class="flex flex-col max-w-full" id="form_update_users">
+				<input type="hidden" name="Id" value="{{value.Codigo}}">
+				<label for="Nombre">
+					Nombre
+				</label>
+				<input type="text" class="input my-5 max-w-full" name="Nombre" id="Nombre">
+				<label for="Email">
+					Email
+				</label>
+				<input type="text" class="input my-5 max-w-full" name="Email" id="Email">
+				<label for="Telefono">
+					Telefono
+				</label>
+				<input type="text" class="input my-5 max-w-full " name="Telefono" id="Telefono">
+				<label for="Rol">
+					Rol
+				</label>
+				<select class="select my-5 max-w-full" name="Rol" id="Rol">
+					<option value="Admin">
+						Admin
+					</option>
+					<option value="User">
+						User
+					</option>
+				</select>
+
+				<button class="btn btn-primary my-5">
+					Guardar
+				</button>
+
+			</form>
+		</section>
+	</div>
+</div>

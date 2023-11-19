@@ -1,0 +1,26 @@
+<article class="flex flex-col-reverse items-center lg:items-start lg:flex-row my-5">
+    <div id="galeria" class="flex flex-row lg:flex-col">
+        {% for value in data.Imagenes %}
+            <div class="gap-3 mt-2 mx-5">
+                <img src="{{ value.Url }}"
+                     class="rounded-md object-cover w-[100px] h-[100px]" />
+            </div>
+        {% endfor %}
+    </div>
+    <div id="portadaContainer">
+        <img src="{{ data.Portada }}"
+             class="rounded-md object-cover w-[70vw]  sm:w-[50vw]  lg:w-[40vw]"
+             id="portada" />
+    </div>
+</article>
+<script>
+		const galeria = document.querySelector('#galeria');
+const portada = document.querySelector('#portada');
+
+galeria.addEventListener('mouseover', (e) => {
+if (e.target.tagName === 'IMG') {
+portada.src = e.target.src;
+}
+});
+	
+</script>

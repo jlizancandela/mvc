@@ -1,0 +1,8 @@
+<div class="divider divider-horizontal my-10 text-2xl text-orange-500 font-extrabold">Podria interesarte</div>
+<div class="flex flex-row">
+	<div class="flex flex-row gap-x-10 flex-wrap md:container md:mx-auto justify-center items-center my-5">
+		{% for value in altdata %}
+			{% include 'components/more_article_card.twig'%}
+		{% endfor %}
+	</div>
+</div>

@@ -1,0 +1,40 @@
+<div class="my-5">
+	<div class="mx-10 text-4xl">
+		{{data.Nombre}}
+	</div>
+	<div class="mx-10 my-5 text-2xl">
+		<span class="badge badge-md badge-outline-primary">
+			{{data.Categoria}}</span>
+	</div>
+	<div class="divider m-5"></div>
+	<div class="mx-10 my-10 text-2xl bg-stone-200/60 shadow-xl rounded-md p-5">
+		<div class="font-bold">
+			<p>Precio:
+			</p>
+		</div>
+
+		{% if session.login %}
+			{% if data.Oferta != Null %}
+				<span>{{data.Precio - (data.Oferta * data.Precio / 100)}}
+					€
+					<span class="badge badge-success mx-5">Oferta!!</span>
+				</span>
+				<span class="line-through mx-10 text-red-500">{{data.Precio}}
+					€</span>
+			{% else %}
+				<span>{{data.Precio}}
+					€</span>
+			{% endif %}
+		{% else %}
+			<span>{{data.Precio}}
+				€</span>
+		{% endif %}
+	</div>
+	<div class="mx-10 my-10  text-2xl bg-stone-200/60 shadow-xl rounded-md p-5">
+		<div class="font-bold">
+			<p>Descripcion:
+			</p>
+		</div>
+		{{data.Descripcion}}
+
+	</div>

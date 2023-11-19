@@ -1,0 +1,23 @@
+<article>
+  <input class="modal-state" id="file-upload-modal" type="checkbox" />
+  <div class="modal">
+    <label class="modal-overlay" for="file-upload-modal"></label>
+    <div class="modal-content flex w-full flex-col gap-5 p-7">
+      <label for="file-upload-modal"
+             class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+      <div class="flex flex-col gap-2">
+        <h2 class="text-center text-2xl font-semibold">Añadir fotografias</h2>
+        <p class="mx-auto max-w-xs text-sm text-content2">Arrastre los archivos para continuar</p>
+      </div>
+      <section>
+        <form id="my-dropzone" class="dropzone">
+          <div class="fallback">
+            <input name="file" type="file" multiple />
+            <input type="hidden" name="Id_articulo_img" />
+          </div>
+        </form>
+        <script></script>
+      </section>
+    </div>
+  </div>
+</article>

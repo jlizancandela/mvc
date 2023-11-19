@@ -1,0 +1,65 @@
+{% extends 'layouts/public_layout.twig' %}
+{% block content %}
+	<form method="POST" id="form_register">
+		<div class="mx-auto flex w-full max-w-sm flex-col gap-6 mt-5">
+			<div class="flex flex-col items-center">
+				<h1 class="text-3xl font-semibold">Sign In</h1>
+				<p class="text-sm">Registrate para acceder a tu cuenta</p>
+			</div>
+			<div
+				class="form-group mt-3">
+				<!-- Campo para el email -->
+				<div class="form-field">
+					<label class="form-label" for="email">Dirección Email
+						<span class="text-red-600 font-bold" id='errormail'></span>
+					</label>
+					<input placeholder="Escribe tu email" type="email" name="email" class="input max-w-full" id="email" required/>
+
+				</div>
+			</div>
+			<!-- Campo para el nombre -->
+			<div class="form-field">
+				<label class="form-label" for="Nombre">Nombre completo</label>
+				<input placeholder="Escribe tu nombre" type="text" name="nombre" class="input max-w-full" id="nombre" required/>
+			</div>
+			<!-- Campo para la Contraseña -->
+			<label for="password" class='text-sm mb-0'>Contraseña</label>
+			<div class="form-control relative w-full mt-[-20]">
+				<input type="password" class="input input-lg max-w-full pl-10" name="password" placeholder="Enter password"/>
+				<span class="absolute inset-y-0 left-3 inline-flex items-center">
+					<i class="eye text-xl bi bi-eye-slash"></i>
+				</span>
+			</div>
+
+			<!-- Campo para el Teléfono -->
+			<div class="form-field">
+				<label class="form-label" for="telefono">Teléfono</label>
+				<input placeholder="Escribe tu teléfono" type="tel" name="telefono" class="input max-w-full" id="telefono" required/>
+			</div>
+			<!-- Campo para la Dirección -->
+			<div class="form-field">
+				<label class="form-label" for="direccion">Dirección</label>
+				<input placeholder="Escribe tu dirección" type="text" name="direccion" class="input max-w-full" id="direccion" required/>
+			</div>
+			<!-- Campo para el código postal -->
+			<div class="form-field">
+				<label class="form-label" for="postalCode">Código Postal</label>
+				<input placeholder="Escribe tu código postal" type="text" name="postalCode" class="input max-w-full" id="postalCode" required/>
+			</div>
+			<!-- Campo para la provincia -->
+			<div class="form-field">
+				<label class="form-label" for="province">Provincia</label>
+				<input placeholder="Escribe tu provincia" type="text" name="province" class="input max-w-full" id="province" required/>
+			</div>
+			<div
+				class="form-field pt-5">
+				<!-- Boton -->
+				<div class="form-control justify-between">
+					<button class="btn btn-primary w-full">Sign in</button>
+				</div>
+			</div>
+		</div>
+		{% include 'components/error.twig' %}
+	</div>
+</form>
+<script src="{{padre}}js/register.js"></script>{% endblock %}

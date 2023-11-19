@@ -1,0 +1,69 @@
+{% extends "layouts/admin_layoud.twig" %}
+{% block content %}
+    <div class="flex m-10">
+        <input type="search"
+               class="input light-table-filter"
+               data-table="order-table"
+               placeholder="Filtro">
+        {% include "/components/create-articles_modal.twig" %}
+        {% include "/components/dropzone.twig" %}
+    </div>
+    <div class="flex justify-center my-10 w-full overflow-x-auto px-10">
+        <table id="myTable"
+               class="sortable order-table table-zebra table border table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Categoria</th>
+                    <th>Publico</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Oferta</th>
+                    <th>Imagenes</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for value in array.articulos %}
+                    <tr>
+                        <td>{{ value.Id }}</td>
+                        <td>{{ value.Nombre }}</td>
+                        <td>{{ value.Categoria }}</td>
+                        <td>{{ value.Publico }}</td>
+                        <td>{{ value.Descripcion }}</td>
+                        <td>
+                            {{ value.Precio }}
+                            €
+                        </td>
+                        <td>
+                            {{ value.Oferta }}
+                            {% if value.Oferta %}
+                                %
+                            {% else %}
+                                No tiene
+                            {% endif %}
+                        </td>
+                        <td>
+                            <ul>
+                                {% for imagen in value.Imagenes %}<li>{{ imagen.Url }}</li>{% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <label class="btn btn-ghost imgbtn"
+                                   for="file-upload-modal"
+                                   id="{{ value.Id }}">img</label>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+{% block js %}
+    <script src="{{padre}}js/admin_articles.js"></script>
+    <script src="{{padre}}js/table.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/sortable.min.css"
+          rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/sortable.min.js"></script>
+{% endblock js %}
