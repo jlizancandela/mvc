@@ -1,5 +1,4 @@
 <article>
-    <label class="btn btn-primary mx-5" for="modal_update_articles">Añadir Producto</label>
     <input class="modal-state" id="modal_update_articles" type="checkbox" />
     <div class="modal">
         <label class="modal-overlay" for="modal_update_articles"></label>
@@ -14,7 +13,7 @@
             <section>
                 <form action="{{ padre }}articles/create"
                       method="post"
-                      class="p-6 space-y-4 form-update-articles">
+                      class="p-6 space-y-4 formUpdateArticles">
                     <div class="form-group">
                         <input name="id" type="number" class="hidden" />
                         {# campo con el id #}
@@ -92,13 +91,13 @@
                             {# ----------------------------------------------------------------------- #}
                             {# Campo para la nueva oferta del articulo, name: nueva-oferta #}
                             {# ----------------------------------------------------------------------- #}
-                            <div class="hidden nOferta">
+                            <div class="hidden nOfertaUpdate">
                                 <input type="text"
                                        class="input max-w-full"
                                        name="nueva-oferta"
                                        placeholder="Describa la oferta" />
                             </div>
-                            <div class="hidden nOferta">
+                            <div class="hidden nOfertaUpdate">
                                 <input type="number"
                                        class="input max-w-full"
                                        name="oferta-dto"

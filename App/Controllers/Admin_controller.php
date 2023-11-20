@@ -33,7 +33,7 @@ class Admin_controller
     }
     //----------------------------------------------------------------
     //Se trae los usuarios del modelo y los pasa a vista
-    //----------------------------------------------------------------    
+    //----------------------------------------------------------------
     public function getUsers()
     {
         $this->users = new User_model();
@@ -82,6 +82,9 @@ class Admin_controller
                 "Publico" => $value["Publico"],
                 "Categoria" => $value["Categoria"],
                 "Descripcion" => $value["Descripcion"],
+                "Id_categoria" => $value["Id_categoria"],
+                "Id_oferta" => $value["Id_oferta"],
+                "Id_Publico" => $value["Id_publico"],
                 "Imagenes" => $articles->getImg($value["Id"]),
             ];
             array_push($array["articulos"], $article);
@@ -238,29 +241,18 @@ class Admin_controller
         // nombre, categoria, publico, nuevaCategoria, descripcion, precio, oferta, nueva-oferta
 
         $array = [
-            "nombre" => isset($_POST["nombre"]) ? $_POST["nombre"] : null,
-            "categoria" => isset($_POST["categoria"])
-                ? $_POST["categoria"]
-                : null,
-            "publico" => isset($_POST["publico"]) ? $_POST["publico"] : null,
-            "nuevaCategoria" => isset($_POST["nuevaCategoria"])
-                ? $_POST["nuevaCategoria"]
-                : null,
-            "descripcionCategoria" => isset($_POST["descripcionCategoria"])
-                ? $_POST["descripcionCategoria"]
-                : null,
-            "descripcion" => isset($_POST["descripcion"])
-                ? $_POST["descripcion"]
-                : null,
-            "precio" => isset($_POST["precio"]) ? $_POST["precio"] : null,
-            "oferta" => isset($_POST["oferta"]) ? $_POST["oferta"] : null,
-            "nuevaOferta" => isset($_POST["nuevaOferta"])
-                ? $_POST["nuevaOferta"]
-                : null,
-            "ofertaDto" => isset($_POST["oferta-dto"])
-                ? $_POST["oferta-dto"]
-                : null,
+            "nombre" => $_POST["nombre"] ?? null,
+            "categoria" => $_POST["categoria"] ?? null,
+            "publico" => $_POST["publico"] ?? null,
+            "nuevaCategoria" => $_POST["nuevaCategoria"] ?? null,
+            "descripcionCategoria" => $_POST["descripcionCategoria"] ?? null,
+            "descripcion" => $_POST["descripcion"] ?? null,
+            "precio" => $_POST["precio"] ?? null,
+            "oferta" => $_POST["oferta"] ?? null,
+            "nuevaOferta" => $_POST["nuevaOferta"] ?? null,
+            "ofertaDto" => $_POST["oferta-dto"] ?? null,
         ];
+
         // CREAR NUEVA CATEGORIA
         if ($array["categoria"] === "nueva") {
             $idCategoria = $this->articles->create_categoria(
@@ -298,5 +290,36 @@ class Admin_controller
         }
 
         header("Location: " . $this->padre . "admin/articles");
+    }
+    public function updateArticle()
+    {
+        $array = [
+            "nombre" => $_POST["nombre"] ?? null,
+            "categoria" => $_POST["categoria"] ?? null,
+            "publico" => $_POST["publico"] ?? null,
+            "nuevacateggit git oria" => $_POST["nuevacategoria"] ?? false,
+            "descripcioncategoria" => $_POST["descripcioncategoria"] ?? null,
+            "descripcion" => $_POST["descripcion"] ?? null,
+            "precio" => $_POST["precio"] ?? null,
+            "oferta" => $_POST["oferta"] ?? null,
+            "nuevaoferta" => $_POST["nuevaoferta"] ?? false,
+            "ofertaDto" => $_POST["ofertaDto"] ?? null,
+        ];
+
+        if ($array["nuevacategoria"] !=  false)  {
+            $idCategoria = $this->articles->create_categoria(
+                $array["nuevaCategoria"],
+                $array["descripcionCategoria"]
+            );
+        }else {
+            $idCategoria = $array['categoria'];
+        }
+
+        if ($array["nuevaoferta"] != false) {
+            $idOferta = $this->articles->create_oferta(
+                $array["nuevaOferta"],
+                $array["ofertaDto"]
+            );
+        }
     }
 }

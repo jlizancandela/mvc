@@ -6,6 +6,7 @@
                data-table="order-table"
                placeholder="Filtro">
         {% include "/components/create-articles_modal.twig" %}
+        {% include "/components/update_articles_modal.twig" %}
         {% include "/components/dropzone.twig" %}
     </div>
     <div class="flex justify-center my-10 w-full overflow-x-auto px-10">
@@ -50,9 +51,18 @@
                             </ul>
                         </td>
                         <td>
-                            <label class="btn btn-ghost imgbtn"
+                            <label class="btn btn-sm btn-primary imgbtn"
                                    for="file-upload-modal"
                                    id="{{ value.Id }}">img</label>
+                            <label class="btn btn-sm btn-primary mx-5  updatebtn"
+                                   for="modal_update_articles"
+                                   data-Id="{{ value.Id }}"
+                                   data-Nombre="{{ value.Nombre }}"
+                                   data-Categoria="{{ value.Id_categoria }}"
+                                   data-Publico="{{ value.Id_Publico }}"
+                                   data-Descripcion="{{ value.Descripcion }}"
+                                   data-Precio="{{ value.Precio }}"
+                                   data-Oferta="{{ value.Id_oferta }}">Modificar</label>
                         </td>
                     </tr>
                 {% endfor %}

@@ -10,13 +10,17 @@ class Articles_model extends model
 {
     public $response;
 
+    //------------------------------------------------------------------
+    // LISTAR TODOS LOS ARTICULOS
+    //------------------------------------------------------------------
     public function getAll()
     {
         $sql = "
         select p.Id, 
         p.Nombre, p.Precio, p.Descripcion,
         p2.Nombre as Publico, c.Nombre as Categoria,
-        o.Oferta
+        o.Oferta, c.Id as Id_categoria, o.Id as Id_oferta,
+        p2.Id as Id_publico
         from Productos p
         inner join `Publico` p2 on p2.Id = p.Id_Publico
         inner join `Pr_categorias` pr on pr.Id_Producto = p.Id
@@ -35,6 +39,9 @@ class Articles_model extends model
             return false;
         }
     }
+    //---------------------------------------------------------------
+    // LISTAR LAS PORTADAS DE X ARTICULOS (PARA HACER BANERS)
+    //---------------------------------------------------------------
     public function getImg_baner($numero)
     {
         $sql = "select  Id_producto, MIN(Url) as Url from Imagenes
@@ -46,6 +53,9 @@ class Articles_model extends model
         $this->response = $query->fetchAll(PDO::FETCH_ASSOC);
         return $this->response;
     }
+    //----------------------------------------------------------------
+    // LISTAR LAS IMAGENES DE UN ARTICULO
+    //----------------------------------------------------------------
     public function getImg($id)
     {
         $sql = "select Url from Imagenes where Id_producto = :id;";
@@ -55,11 +65,19 @@ class Articles_model extends model
         $this->response = $query->fetchAll(PDO::FETCH_ASSOC);
         return $this->response;
     }
+    //----------------------------------------------------------------
+    // CONTAR LOS ARTICULOS SELECIONADOS (PARA EL PAGINADOR)
+    //----------------------------------------------------------------
     public function getCount($public, $inner, $limit)
     {
-        // ---------------------------------------------------------------------------
-        // sentencia sql
-        // ---------------------------------------------------------------------------
+        // PARAMETROS
+        //--------------
+        // PUBLIC -> PUBLICO
+        // INNER -> TIPO DE JOIN A LA HORA DE RELACIONAR LAS OFERTAS
+        //         INNER JOIN PARA SOLO OFERTAS
+        //         LEFT JOIN PARA MOSTRAR TODOS LOS PRODUCTOS
+        // LIMIT -> LIMITE DE PRODUCTOS (PARA EL PAGINADOR)
+        //------------------------------------------------------------
 
         $sql = "
         select p.Id, 
@@ -74,43 +92,36 @@ class Articles_model extends model
         where p2.Nombre like :public;
         ";
 
-        // ---------------------------------------------------------------------------
-        // Asigno clasicacion de productos
-        // ---------------------------------------------------------------------------
-
-        $public = !isset($public) ? "%" : $public; // si no existe publico, se asigna All
-
-        $sql = str_replace("{{soloOfertas}}", $inner, $sql); // se reemplaza {{soloOfertas}} por $inner
+        $sql = str_replace("{{soloOfertas}}", $inner, $sql); // SE REMPLAZA POR EL TIPO DE UNION
 
         $query = $this->pdo->prepare($sql);
+        $public = !isset($public) ? "%" : $public;
+        $query->bindParam(":public", $public, PDO::PARAM_STR);
 
-        $query->bindParam(":public", $public, PDO::PARAM_STR); // se agrega el parametro publico
-
-        // ---------------------------------------------------------------------------
-        //                se obtiene el numero de registros
-        // ---------------------------------------------------------------------------
         $query->execute();
 
-        $rows = $query->rowCount(); // se obtiene el numero de filas
-
+        $rows = $query->rowCount(); // se obtiene el numero de filas para el paginador
         $total_pages = ceil($rows / $limit); // se determina el numero de paginas
 
         return $total_pages;
     }
+    //------------------------------------------------------------------------------------
+    // LISTAR PRODUCTOS SEGUN CATEGORIA O PUBLICO
+    //------------------------------------------------------------------------------------
     public function getAll_by_public($public, $not, $inner = "left", $page = 1)
     {
-        // ---------------------------------------------------------------------------
-        //                se obtiene el numero de filas y paginas
-        // ---------------------------------------------------------------------------
+        // PARAMETROS
+        //--------------
+        // PUBLIC -> PUBLICO
+        // NOT -> PARA LOS PRODUCTOS ALTERNATIVOS
+        //        NOT PARA 'NOT LIKE'
+        //       "" PARA 'LIKE'
+        // INNER -> TIPO DE JOIN A LA HORA DE RELACIONAR LAS OFERTAS
+        //         INNER JOIN PARA SOLO OFERTAS
+        //         LEFT JOIN PARA MOSTRAR TODOS LOS PRODUCTOS
+        // LIMIT -> LIMITE DE PRODUCTOS (PARA EL PAGINADOR)
 
-        $page = isset($page) ? $page : 1; // si no existe page, se asigna 1
-        $limit = 4; // limite de productos por pagina
-        $offset = ($page - 1) * $limit; // offset de la pagina
-
-        // ---------------------------------------------------------------------------
-        // sentencia sql
-        // ---------------------------------------------------------------------------
-
+        //---------------------SENTENCIA--------------------------------------------------
         $sql = "
         select p.Id, 
         p.Nombre, p.Precio, p.Descripcion, 
@@ -123,25 +134,26 @@ class Articles_model extends model
         {{soloOfertas}} join `Ofertas` o on prof.Id_Oferta = o.Id
         where p2.Nombre {{not}} like :public
         limit :limit offset :offset;";
-
-        $public = !isset($public) ? "%" : $public; // si no existe publico, se asigna All
-        $not = $not != "" ? "not" : ""; // si no existe not, se asigna vacio
-        $sql = str_replace("{{not}}", $not, $sql); // se reemplaza {{not}} por $not
-        $sql = str_replace("{{soloOfertas}}", $inner, $sql); // se reemplaza {{soloOfertas}} por $inner
-
+        
+        //---------------------VARIABLES---------------------------------------------------
+        $public = !isset($public) ? "%" : $public;
+        $not = $not != "" ? "not" : ""; // PARA LAS ALTERNATIVAS
+        $page = isset($page) ? $page : 1; 
+        $limit = 4; // limite de productos por pagina
+        $offset = ($page - 1) * $limit; // offset de la pagina
+        
+        //---------------------EJECUCION----------------------------------------------------
         $query = $this->pdo->prepare($sql);
+        $sql = str_replace("{{soloOfertas}}", $inner, $sql); // se reemplaza {{soloOfertas}} por $inner
+        $sql = str_replace("{{not}}", $not, $sql); // se reemplaza {{not}} por $not
         $query->bindParam(":public", $public, PDO::PARAM_STR); // se agrega el parametro publico
         $query->bindParam(":limit", $limit, PDO::PARAM_INT);
         $query->bindParam(":offset", $offset, PDO::PARAM_INT);
-
         $query->execute();
         $data = $query->fetchAll(PDO::FETCH_ASSOC);
-        // -----------------------------------------------------------------------------------------
-        //   se recorre el array de productos y se ordenan en un nuevo array agregando las imagenes
-        // -----------------------------------------------------------------------------------------
-
         $respuesta = [];
-
+        
+        //------------------TRATO LA RESPUESTA------------------------------------------------
         foreach ($data as $key => $value) {
             $precio = $value["Precio"];
             $Oferta = $value["Oferta"];
@@ -162,6 +174,9 @@ class Articles_model extends model
 
         return $respuesta;
     }
+    //-------------------------------------------------------------------------------------------
+    // LISTAR UN ARTICULO
+    //-------------------------------------------------------------------------------------------
     public function getOne($id)
     {
         $respuesta = [];
@@ -197,6 +212,9 @@ class Articles_model extends model
         return $respuesta;
     }
 
+    //------------------------------------------------------------------------
+    // LISTAR CATEGORIAS
+    //------------------------------------------------------------------------
     public function get_categorias()
     {
         $sql = "Select * from Categorias";
@@ -206,6 +224,9 @@ class Articles_model extends model
         return $data;
     }
 
+    //-------------------------------------------------------------------------
+    // LISTAR OFERTAS
+    //-------------------------------------------------------------------------
     public function get_ofertas()
     {
         $sql = "Select * from Ofertas";
@@ -214,7 +235,9 @@ class Articles_model extends model
         $data = $query->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
-
+    //------------------------------------------------------------------------
+    // LISTAR PUBLICO
+    //------------------------------------------------------------------------
     public function get_publico()
     {
         $sql = "Select * from Publico";
@@ -223,7 +246,9 @@ class Articles_model extends model
         $data = $query->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
-
+    //-------------------------------------------------------------------------
+    // INSERTAR IMAGEN EN UN ARTICULO
+    //-------------------------------------------------------------------------
     public function create_img($id, $url)
     {
         $sql =
@@ -233,6 +258,9 @@ class Articles_model extends model
         $query->bindParam(":url", $url, PDO::PARAM_STR);
         return $query->execute();
     }
+    //------------------------------------------------------------------------
+    // CREAR CATEGORIAS
+    //------------------------------------------------------------------------
     public function create_categoria($nombre, $descripcion)
     {
         $sql =
@@ -249,6 +277,9 @@ class Articles_model extends model
             return false;
         }
     }
+    //--------------------------------------------------------------------------
+    // CREAR OFERTAS
+    //--------------------------------------------------------------------------
     public function create_oferta($nombre, $oferta)
     {
         $sql =
@@ -262,6 +293,9 @@ class Articles_model extends model
             return false;
         }
     }
+    //----------------------------------------------------------------------------
+    // RELACIONAR PRODUCTO CON CATEGORIA
+    //----------------------------------------------------------------------------
     public function create_prcategoria($producto, $categoria)
     {
         $sql =
@@ -272,6 +306,25 @@ class Articles_model extends model
             ":categoria" => $categoria,
         ]);
     }
+    //------------------------------------------------------------------------
+    // RELACIONAR PRODUCTO CON OFERTA
+    //------------------------------------------------------------------------
+    public function create_proferta($producto, $oferta)
+    {
+        $producto = isset($producto) ? $producto : null;
+        $oferta = isset($oferta) ? $oferta : null;
+
+        $sql =
+            "INSERT INTO Pr_ofertas (Id_Producto, Id_Oferta) VALUES (:producto, :oferta);";
+        $query = $this->pdo->prepare($sql);
+        return $query->execute([
+            ":producto" => $producto,
+            ":oferta" => $oferta,
+        ]);
+    }
+    //----------------------------------------------------------------------------
+    // CREAR PRODUCTO
+    //----------------------------------------------------------------------------
     public function create_Product($nombre, $precio, $descripcion, $publico)
     {
         $nombre = isset($nombre) ? $nombre : null;
@@ -294,18 +347,9 @@ class Articles_model extends model
             return false;
         }
     }
-
-    public function create_proferta($producto, $oferta)
-    {
-        $producto = isset($producto) ? $producto : null;
-        $oferta = isset($oferta) ? $oferta : null;
-
-        $sql =
-            "INSERT INTO Pr_ofertas (Id_Producto, Id_Oferta) VALUES (:producto, :oferta);";
-        $query = $this->pdo->prepare($sql);
-        return $query->execute([
-            ":producto" => $producto,
-            ":oferta" => $oferta,
-        ]);
-    }
+    //-----------------------------------------------------------------------------
+    // MODIFICAR PRODUCTO
+    //-----------------------------------------------------------------------------
+    
+   
 }
