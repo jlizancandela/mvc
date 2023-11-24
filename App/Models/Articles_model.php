@@ -110,18 +110,18 @@ class Articles_model extends model
     //------------------------------------------------------------------------------------
     public function getAll_by_public($public, $not, $inner = "left", $page = 1)
     {
-        // PARAMETROS
-        //--------------
-        // PUBLIC -> PUBLICO
-        // NOT -> PARA LOS PRODUCTOS ALTERNATIVOS
-        //        NOT PARA 'NOT LIKE'
-        //       "" PARA 'LIKE'
-        // INNER -> TIPO DE JOIN A LA HORA DE RELACIONAR LAS OFERTAS
-        //         INNER JOIN PARA SOLO OFERTAS
-        //         LEFT JOIN PARA MOSTRAR TODOS LOS PRODUCTOS
-        // LIMIT -> LIMITE DE PRODUCTOS (PARA EL PAGINADOR)
+        // ---------------------------------------------------------------------------
+        //                se obtiene el numero de filas y paginas
+        // ---------------------------------------------------------------------------
 
-        //---------------------SENTENCIA--------------------------------------------------
+        $page = isset($page) ? $page : 1; // si no existe page, se asigna 1
+        $limit = 4; // limite de productos por pagina
+        $offset = ($page - 1) * $limit; // offset de la pagina
+
+        // ---------------------------------------------------------------------------
+        // sentencia sql
+        // ---------------------------------------------------------------------------
+
         $sql = "
         select p.Id, 
         p.Nombre, p.Precio, p.Descripcion, 
@@ -134,26 +134,25 @@ class Articles_model extends model
         {{soloOfertas}} join `Ofertas` o on prof.Id_Oferta = o.Id
         where p2.Nombre {{not}} like :public
         limit :limit offset :offset;";
-        
-        //---------------------VARIABLES---------------------------------------------------
-        $public = !isset($public) ? "%" : $public;
-        $not = $not != "" ? "not" : ""; // PARA LAS ALTERNATIVAS
-        $page = isset($page) ? $page : 1; 
-        $limit = 4; // limite de productos por pagina
-        $offset = ($page - 1) * $limit; // offset de la pagina
-        
-        //---------------------EJECUCION----------------------------------------------------
-        $query = $this->pdo->prepare($sql);
-        $sql = str_replace("{{soloOfertas}}", $inner, $sql); // se reemplaza {{soloOfertas}} por $inner
+
+        $public = !isset($public) ? "%" : $public; // si no existe publico, se asigna All
+        $not = $not != "" ? "not" : ""; // si no existe not, se asigna vacio
         $sql = str_replace("{{not}}", $not, $sql); // se reemplaza {{not}} por $not
+        $sql = str_replace("{{soloOfertas}}", $inner, $sql); // se reemplaza {{soloOfertas}} por $inner
+
+        $query = $this->pdo->prepare($sql);
         $query->bindParam(":public", $public, PDO::PARAM_STR); // se agrega el parametro publico
         $query->bindParam(":limit", $limit, PDO::PARAM_INT);
         $query->bindParam(":offset", $offset, PDO::PARAM_INT);
+
         $query->execute();
         $data = $query->fetchAll(PDO::FETCH_ASSOC);
+        // -----------------------------------------------------------------------------------------
+        //   se recorre el array de productos y se ordenan en un nuevo array agregando las imagenes
+        // -----------------------------------------------------------------------------------------
+
         $respuesta = [];
-        
-        //------------------TRATO LA RESPUESTA------------------------------------------------
+
         foreach ($data as $key => $value) {
             $precio = $value["Precio"];
             $Oferta = $value["Oferta"];
@@ -350,6 +349,4 @@ class Articles_model extends model
     //-----------------------------------------------------------------------------
     // MODIFICAR PRODUCTO
     //-----------------------------------------------------------------------------
-    
-   
 }
